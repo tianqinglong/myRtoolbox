@@ -1,4 +1,4 @@
-simulate_data <- function(type, r , Pt, shape, scale) {
+simulate_weibull_data <- function(type, r , Pt, shape, scale) {
 
   n <- round( r/Pt )
 
