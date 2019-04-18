@@ -1,2 +1,2 @@
 # My Personal R Package
-**Hello, welcome to the dumbest package in the world!**
+**Hello, welcome to the ~~dumbest~~cleverest package in the world!**
