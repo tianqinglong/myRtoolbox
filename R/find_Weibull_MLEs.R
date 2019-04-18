@@ -1,10 +1,20 @@
+#' Compute The MLEs of the Weibull Censored Data
+#'
+#' Find out the MLEs for censored data with \code{survival} package.
+#'
+#' @param censor_data The value of function \code{simulate_weibull_data()}.
+#' @examples
+#' censor_data <- simulate_weibull_data(1, 5, 0.2, 1, 1)
+#' ( censor_data_with_mle <- add_Weibull_mle(censor_data) )
+#' @export
+#' @importFrom survival Surv survreg
 add_Weibull_mle <- function(censor_data) {
 
   n_minus_r <- censor_data[[4]] - censor_data[[1]]
 
 
 
-  sobj <- survival::Surv(time = c( censor_data[[3]],
+  sobj <- Surv(time = c( censor_data[[3]],
 
                          rep(censor_data[[2]], n_minus_r)
 
@@ -20,7 +30,7 @@ add_Weibull_mle <- function(censor_data) {
 
   )
 
-  sfit <- survival::survreg(sobj~1, dist = 'weibull')
+  sfit <- survreg(sobj~1, dist = 'weibull')
 
 
 
@@ -40,6 +50,21 @@ add_Weibull_mle <- function(censor_data) {
 
 }
 
+#' A Wrapper Function of \code{simulate_weibull_data}
+#'
+#' This function only gives the MLEs, discarding the censoring data.
+#'
+#' @param censor_data The value of function\code{simulate_weibull_data()}.
+#' @export
+find_Weibull_MLEs <- function(censor_data){
+  weibull_list <- add_Weibull_mle(censor_data)
+  MLEs <- list(shape = weibull_list$Shape,
+               scale = weibull_list$Scale)
+  return(MLEs)
+}
+
+#' The Log-likelihood Function
+#' @keywords internal
 wbfuncFRWB <- function(para, r, n, weights, times){
   a = para[1]
   b = para[2]
@@ -53,6 +78,15 @@ wbfuncFRWB <- function(para, r, n, weights, times){
   return(-value)
 }
 
+#' A Robust Algorithm to Compute The MLEs of the Weighted Weibull Censored Data
+#'
+#' Compute the MLEs of censored Weibull data by reparameterization and using \code{optim()} function.
+#' @param censor_data The value of function \code{simulate_weibull_data()}.
+#' @param weight Specify the way to put a weight on the data. "no": do not put the weight on the data.
+#' @examples
+#' censor_data <- simulate_weibull_data(1, 5, 0.2, 1, 1)
+#' ( censor_data_with_mle <- add_Weibull_mle_robust(censor_data) )
+#' @export
 add_Weibull_mle_robust <- function(censor_data, weight = "no")
 {
   options(warn=-1)
@@ -95,8 +129,14 @@ add_Weibull_mle_robust <- function(censor_data, weight = "no")
   )
 }
 
-find_Weibull_MLEs <- function(censor_data){
-  weibull_list <- add_Weibull_mle(censor_data)
+#' A Wrapper Function of \code{add_Weibull_mle_robust}
+#'
+#' This function only gives the MLEs, discarding the censoring data.
+#'
+#' @param censor_data The value of function\code{add_Weibull_mle_robust()}.
+#' @export
+find_Weibull_MLEs_robust <- function(censor_data){
+  weibull_list <- add_Weibull_mle_robust(censor_data)
   MLEs <- list(shape = weibull_list$Shape,
                scale = weibull_list$Scale)
   return(MLEs)

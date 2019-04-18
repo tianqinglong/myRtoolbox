@@ -1,3 +1,14 @@
+#' Simulate Weibull censored data.
+#'
+#' @param type Censoring Type
+#' @param r Expected Number of Failures
+#' @param Pt Fraction of Failing
+#' @param shape The Weibull shape parameter
+#' @param scale The Weibull scale parameter
+#' @examples
+#' simulate_weibull_data(2, 10, 0.1, 1, 1)
+#' @export
+#' @importFrom stats dweibull optim pweibull runif
 simulate_weibull_data <- function(type, r , Pt, shape, scale) {
 
   n <- round( r/Pt )
@@ -18,7 +29,7 @@ simulate_weibull_data <- function(type, r , Pt, shape, scale) {
 
     if( sum( y_vector > 0 ) < 2){
 
-      output <- simulate_data(type, r, Pt, shape, scale)
+      output <- simulate_weibull_data(type, r, Pt, shape, scale)
 
       return(output)
     }

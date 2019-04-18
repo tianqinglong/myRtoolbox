@@ -5,8 +5,9 @@ Version: 0.1.0
 Authors@R: person("Qinglong", "Tian", email = "qltian@iastate.edu",
   role = c("aut", "cre"))
 Description: This package contains functions that I use frequently.
-License: MIT
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
     survival
+RoxygenNote: 6.1.1
